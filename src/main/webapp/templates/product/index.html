@@ -34,6 +34,18 @@
     <h1>Codecool Shop</h1>
 </div>
 
+<div class="container" >
+    <form action="/" method="get" id="submit-category">
+            <select name="category" id="sort-category">
+                <option th:each="cat,iterStat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Names for categories in selector go here</option>
+            </select>
+
+        <input type="submit" value="GO!">
+    </form>
+
+</div>
+
+
 <div class="container">
     <div class="card">
         <strong th:text="${category.name}">Category Title</strong>

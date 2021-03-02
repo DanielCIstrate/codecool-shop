@@ -44,4 +44,14 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
     public List<ProductCategory> getAll() {
         return data;
     }
+
+    @Override
+    public void initializeWithStoredCategories() {
+        ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
+        ProductCategory laptop = new ProductCategory("Laptop", "Hardware", "A small portable computer that can run on battery power and has the main parts (as keyboard and display screen) combined into a single unit.");
+        ProductCategory desktop = new ProductCategory("Desktop Computer", "Hardware", "A general-purpose computer equipped with a microprocessor and designed to run especially commercial software (such as a word processor or Internet browser) for an individual user");
+        data.add(tablet);
+        data.add(laptop);
+        data.add(desktop);
+    }
 }
