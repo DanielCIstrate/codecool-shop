@@ -25,6 +25,7 @@ window.addEventListener('load', function(e) {
 window.onload = function() {
     let addToCartButtons = document.querySelectorAll(".addToCartButton");
     let cartCounter = document.querySelector(".cart-basket")
+    cartCounter.innerText = dataHandler.getTotalQuantityForOrder();
 
     function handleAddToCartClick(event, targetButton) {
         let productIdForButton = parseInt(targetButton.dataset.productId);
