@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = {"/"})        // localhost/?sort-category=2
+@WebServlet(urlPatterns = {""})        // localhost/?sort-category=2
 public class ProductController extends HttpServlet {
 
     @Override
