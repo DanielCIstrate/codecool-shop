@@ -94,26 +94,6 @@ export let dataHandler = {
 
 
 
-// window.addEventListener('load', function(e) {
-//     var mySession = localStorage.getItem('mySession');
-//     if (mySession) {
-//         try {
-//             mySession = JSON.parse(localStorage.getItem('mySession'));
-//         } catch (e) {
-//             console.log(e);
-//             mySession = {};
-//         }
-//         restoreSession(mySession);
-//     } else {
-//         localStorage.setItem('mySession', '{}');
-//     }
-//
-//     setSessionItem('key1', Date.now()); //should change on each window load
-//
-//     if (!mySession.key2) {
-//         setSessionItem('key2', Date.now()); //should not change on refresh
-//     }
-// }, false);
 
 
 
