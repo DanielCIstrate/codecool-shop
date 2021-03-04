@@ -27,7 +27,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
-
+    <script type="module" src="/static/js/products.js" defer></script>
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 
@@ -76,7 +76,7 @@
                         <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                     </div>
                     <div class="card-text">
-                        <a class="btn btn-success" href="#">Add to cart</a>
+                        <a class="btn btn-success addToCartButton" href="#" th:attr="data-product-id=${prod.id}">Add to cart</a>
                     </div>
                 </div>
             </div>
