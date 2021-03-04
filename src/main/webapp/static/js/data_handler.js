@@ -43,6 +43,7 @@ export let dataHandler = {
 
         }
         else {
+            this.createNewOrderOnServer();
             this._data["order"] = [];
             this._data["order"].push({"productId": productId, "quantity": quantity});
         }
@@ -56,6 +57,14 @@ export let dataHandler = {
             return total;
         }
         else { return 0; }
+    },
+
+    createNewOrderOnServer() {
+        let userId = this.getSessionItem('userId');
+        this._api_post(
+            "/create-order",
+            {"userId": userId, "name": Date.now().toString()},
+            () => {});
     },
 
     setSessionItem(name, value) {
