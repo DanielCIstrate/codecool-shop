@@ -1,14 +1,22 @@
 package com.codecool.shop.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.BufferedReader;
 import java.util.List;
 
 public class Order extends BaseModel {
 
-
+    private final int senderId;
     private List<LineItem> itemList;
 
-    public Order(String name) {
+    @JsonCreator
+    public Order(@JsonProperty("userId") int senderId, @JsonProperty("name") String name) {
         super(name);
+        this.senderId = senderId;
     }
 
     public float getTotalPrice() {
@@ -43,5 +51,35 @@ public class Order extends BaseModel {
             currentItem.updateProductPrice();
             this.addToOrder(currentItem);
         }
+    }
+
+    public static Order deserializeFromBuffer(BufferedReader reader) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Order deserialized = null;
+        try {
+            deserialized = objectMapper.readValue(reader, Order.class);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return deserialized;
+    }
+
+    public static Order deserializeFromString(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Order deserialized = null;
+        try {
+            deserialized = objectMapper.readValue(json, Order.class);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return deserialized;
+    }
+
+    public int getSenderId() {
+        return senderId;
     }
 }
