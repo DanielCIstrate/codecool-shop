@@ -46,6 +46,7 @@ export let dataHandler = {
             this._data["order"] = [];
             this._data["order"].push({"productId": productId, "quantity": quantity});
         }
+        this.setSessionItem("data", this._data)
     },
 
     getTotalQuantityForOrder() {
@@ -60,7 +61,7 @@ export let dataHandler = {
     setSessionItem(name, value) {
         var mySession;
         try {
-            mySession = JSON.parse(localStorage.getItem('mySession'));
+            mySession = JSON.parse(localStorage.getItem('codecool-shop'));
         } catch (e) {
             console.log(e);
             mySession = {};
@@ -70,14 +71,14 @@ export let dataHandler = {
 
         mySession = JSON.stringify(mySession);
 
-        localStorage.setItem('mySession', mySession);
+        localStorage.setItem('codecool-shop', mySession);
     },
 
     getSessionItem(name) {
-        var mySession = localStroage.getItem('mySession');
+        var mySession = localStorage.getItem('codecool-shop');
         if (mySession) {
             try {
-                mySession = JSON.stringify(mySession);
+                mySession = JSON.parse(mySession);
                 return mySession[name];
             } catch (e) {
                 console.log(e);
@@ -85,10 +86,11 @@ export let dataHandler = {
         }
     },
 
-    restoreSession(data) {
-        for (var x in data) {
-            //use saved data to set values as needed
-            console.log(x, data[x]);
+    restoreSession(session) {
+        if (session) {
+            if (session.hasOwnProperty("data")) {
+                this._data = session["data"]
+            }
         }
     },
 
