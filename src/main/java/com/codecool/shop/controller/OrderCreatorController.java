@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +33,12 @@ public class OrderCreatorController extends HttpServlet {
         BufferedReader reader = request.getReader();
         String requestData = reader.lines().collect(Collectors.joining());
 //        System.out.println(requestData);    // debug log
-        addOrder(Order.deserializeFromString(requestData));
+        Order newOrder = Order.deserializeFromString(requestData);
+        int senderId = newOrder.getSenderId();
+        if ( orderDataStore.hasOrderFromUser(senderId) ) {
+            newOrder = orderDataStore.getFirstOrderFrom(senderId);
+        }
+        addOrder(newOrder);
 
         // Debug output for success
         //
@@ -40,15 +46,20 @@ public class OrderCreatorController extends HttpServlet {
         //        orders.get(orders.size()-1).getSenderId(),
         //       orders.get(orders.size()-1).getName()
         //);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+        out.println("{\"orderId\":"+newOrder.getId()+"}");
+
     }
 
 
-    public List<Order> getOrders() {
-        return List.copyOf(orders);
-    }
+
 
     public void addOrder(Order newOrder) {
-        orders.add(newOrder);
+        orderDataStore.add(newOrder);
     }
 
 
