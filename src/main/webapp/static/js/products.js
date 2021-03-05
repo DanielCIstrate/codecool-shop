@@ -7,6 +7,7 @@ window.addEventListener('load', function(event) {
 
 window.onload = function() {
     let addToCartButtons = document.querySelectorAll(".addToCartButton");
+    let emptyCartConfirmButton = document.querySelector("#emptyCartConfirm");
     let cartCounter = document.querySelector(".cart-basket")
     cartCounter.innerText = dataHandler.getTotalQuantityForOrder();
 
@@ -18,12 +19,24 @@ window.onload = function() {
         cartCounter.innerText = dataHandler.getTotalQuantityForOrder();
     }
 
+    function handleEmptyCartClick(event) {
+        alert("Would now clear all cart!")
+        // dataHandler.clearOrder();
+    }
+
     addToCartButtons.forEach(button => {
         button.addEventListener(
             'click',
             (event) => handleAddToCartClick(event, event.target)
         )
     });
+
+    emptyCartConfirmButton.addEventListener(
+        'click',
+        (event) => handleEmptyCartClick(event))
+
+
+
 
 
 }

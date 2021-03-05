@@ -38,7 +38,7 @@
 </div>
 
 <div class="header navigation">
-    <a class="btn btn-danger emptyCartButton">Empty cart</a>
+    <a class="btn btn-danger emptyCartButton" data-toggle="modal" data-target="#emptyCartModal">Empty cart</a>
     <a href="/view-cart" class="cart position-relative d-inline-flex" aria-label="View your shopping cart">
         <i class="fas fa fa-shopping-cart fa-lg"></i>
         <span class="cart-basket d-flex align-items-center justify-content-center">
@@ -85,6 +85,13 @@
     </div>
 
 </div>
+
+<!-- Modals (Not displayed on load) -->
+
+<div th:replace="modals.html :: emptyCartConfirm"></div>
+
+
+<!-- END Modals -->
 
 <div th:replace="footer.html :: copy"></div>
 
