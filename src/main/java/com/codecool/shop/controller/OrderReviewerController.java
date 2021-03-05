@@ -1,6 +1,9 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.model.Order;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -19,10 +22,26 @@ public class OrderReviewerController extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws ServletException, IOException {
+        Order currentOrder = null;
+        Integer currentOrderId = null;
+        try {
+            currentOrderId = Integer.parseInt(request.getParameter("orderId"));
+        } catch (NumberFormatException e) {
+            System.out.println("Could not parse int");
+            System.out.println(e.getMessage());
+        }
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(
                 request.getServletContext()
         );
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+        if (currentOrderId != null) {
+            currentOrder = orderDataStore.find(currentOrderId);
+        }
         WebContext context = new WebContext(request, response, request.getServletContext());
+        if (currentOrder != null && currentOrder.getItemList() != null) {
+            context.setVariable("order", currentOrder.getItemList());
+        }
+
         engine.process("cart.html", context, response.getWriter());
     }
 }

@@ -83,4 +83,9 @@ public class Order extends BaseModel {
     public int getSenderId() {
         return senderId;
     }
+
+    public List<LineItem> getItemList() {
+        if (this.itemList == null) { return null; };
+        return new ArrayList<>(this.itemList);
+    }
 }
