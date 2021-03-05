@@ -6,5 +6,5 @@ window.addEventListener('load', function(event) {
 
 let data = dataHandler.getSessionItem("data");
 if (data.hasOwnProperty("orderId")) {
-   dataHandler.updateOrderOnServer();
+
 }

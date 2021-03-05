@@ -9,6 +9,7 @@ window.onload = function() {
     let addToCartButtons = document.querySelectorAll(".addToCartButton");
     let emptyCartConfirmButton = document.querySelector("#emptyCartConfirm");
     let cartCounter = document.querySelector(".cart-basket")
+    let cartIcon = document.querySelector("#cartIconAnchor")
     cartCounter.innerText = dataHandler.getTotalQuantityForOrder();
 
     function handleAddToCartClick(event, targetButton) {
@@ -24,6 +25,14 @@ window.onload = function() {
         cartCounter.innerText = 0;
     }
 
+    async function handleCartIconClick(event) {
+        let data = dataHandler.getSessionItem("data");
+        if (data.hasOwnProperty("orderId")) {
+            await dataHandler.updateOrderOnServer();
+            cartIcon.href = `/view-cart?orderId=${data["orderId"]}`
+        }
+    }
+
     addToCartButtons.forEach(button => {
         button.addEventListener(
             'click',
@@ -34,6 +43,11 @@ window.onload = function() {
     emptyCartConfirmButton.addEventListener(
         'click',
         (event) => handleEmptyCartClick(event))
+
+    cartIcon.addEventListener(
+        'click',
+        (event) => handleCartIconClick(event)
+    )
 
 
 
