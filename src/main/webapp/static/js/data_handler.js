@@ -37,7 +37,7 @@ export let dataHandler = {
             }
             this.restoreSession(mySession);
         } else {
-            this.setItem('codecool-shop', '{}');
+            localStorage.setItem('codecool-shop', '{}');
         }
 
         this.setSessionItem('userId', 1); //should change on each window load
