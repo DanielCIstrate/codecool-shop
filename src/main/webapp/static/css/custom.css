@@ -64,7 +64,9 @@
     width: 100%;
     height: 90px;
     display: flex;
-    align-items: flex-end;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 
@@ -93,4 +95,9 @@ a.cart .cart-basket {
 a.cart {
     color: navy;
     font-size: 21pt;
+    margin: 15px;
+}
+
+a.emptyCartButton {
+    max-height: 36px;
 }
