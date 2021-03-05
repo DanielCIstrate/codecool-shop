@@ -1,7 +1,7 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
 
 public class LineItem extends SimpleLineItem{
     private float productPrice;
@@ -18,7 +18,7 @@ public class LineItem extends SimpleLineItem{
     }
 
     public void updateProductPrice() {
-        ProductDao dataStoreForProduct = ProductDaoMem.getInstance();
+        ProductDao dataStoreForProduct = ProductController.getProductDaoInstance();
         Product product;
         product = dataStoreForProduct.find(this.getProductId());
         if (product != null) {

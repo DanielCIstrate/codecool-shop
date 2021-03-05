@@ -55,5 +55,9 @@ public class ProductController extends HttpServlet {
         return categoryId;
     }
 
+    public static ProductDao getProductDaoInstance() {
+        return ProductDaoMem.getInstance();
+    }
+
 
 }
