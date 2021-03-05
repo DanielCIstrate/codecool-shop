@@ -26,6 +26,27 @@ export let dataHandler = {
             .then(json_response => callback(json_response));
     },
 
+    init() {
+        let mySession = localStorage.getItem('codecool-shop');
+        if (mySession) {
+            try {
+                mySession = JSON.parse(localStorage.getItem('codecool-shop'));
+            } catch (e) {
+                console.log(e);
+                mySession = {};
+            }
+            this.restoreSession(mySession);
+        } else {
+            this.setItem('codecool-shop', '{}');
+        }
+
+        this.setSessionItem('userId', 1); //should change on each window load
+
+        // if (!dataHandler.getSessionItem("stable_key")) {
+        //    dataHandler.setSessionItem("stable_key", defaultValue)
+        // }
+    },
+
     addLineItemInOrderJSON(productId, quantity) {
         if (this._data.hasOwnProperty("order")){
             let foundLine = [... this._data["order"]]
@@ -78,7 +99,7 @@ export let dataHandler = {
         let orderId;
         if (data.hasOwnProperty('orderId')) {
             orderId = data['orderId'];
-            this.doUpdateOrderFetchWithOrderId(orderId)
+            this.doUpdateOrderFetchWithOrderId(orderId, data)
         }
         else {
             this.createNewOrderOnServer()
@@ -88,7 +109,7 @@ export let dataHandler = {
         }
     },
 
-    doUpdateOrderFetchWithOrderId(orderId) {
+    doUpdateOrderFetchWithOrderId(orderId, data) {
         let userId = this.getSessionItem('userId');
         if (data.hasOwnProperty('order')) {
             let order = data['order'];

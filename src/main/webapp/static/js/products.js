@@ -1,24 +1,7 @@
 import {dataHandler} from "/static/js/data_handler.js";
 
 window.addEventListener('load', function(event) {
-    let mySession = localStorage.getItem('codecool-shop');
-    if (mySession) {
-        try {
-            mySession = JSON.parse(localStorage.getItem('codecool-shop'));
-        } catch (e) {
-            console.log(e);
-            mySession = {};
-        }
-        dataHandler.restoreSession(mySession);
-    } else {
-        localStorage.setItem('codecool-shop', '{}');
-    }
-
-    dataHandler.setSessionItem('userId', 1); //should change on each window load
-
-    // if (!dataHandler.getSessionItem("stable_key")) {
-    //    dataHandler.setSessionItem("stable_key", defaultValue)
-    // }
+    dataHandler.init();
 }, false);
 
 
