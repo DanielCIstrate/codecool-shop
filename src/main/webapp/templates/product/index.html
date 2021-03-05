@@ -76,7 +76,7 @@
                         <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                     </div>
                     <div class="card-text">
-                        <a class="btn btn-success addToCartButton" href="#" th:attr="data-product-id=${prod.id}">Add to cart</a>
+                        <a class="btn btn-success addToCartButton" href="#" th:attr="data-product-id=${prod.id},data-product-name=${prod.name}">Add to cart</a>
                     </div>
                 </div>
             </div>

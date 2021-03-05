@@ -1,7 +1,7 @@
 import {dataHandler} from "/static/js/data_handler.js";
 
-window.addEventListener('load', function(e) {
-    var mySession = localStorage.getItem('codecool-shop');
+window.addEventListener('load', function(event) {
+    let mySession = localStorage.getItem('codecool-shop');
     if (mySession) {
         try {
             mySession = JSON.parse(localStorage.getItem('codecool-shop'));
@@ -29,7 +29,8 @@ window.onload = function() {
 
     function handleAddToCartClick(event, targetButton) {
         let productIdForButton = parseInt(targetButton.dataset.productId);
-        alert(`You've clicked the button for product id ${productIdForButton}`);
+        let productNameForButton = targetButton.dataset.productName
+        alert(`${productNameForButton} added to cart`);
         dataHandler.addLineItemInOrderJSON(productIdForButton, 1);
         cartCounter.innerText = dataHandler.getTotalQuantityForOrder();
     }
