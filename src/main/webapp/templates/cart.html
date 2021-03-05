@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Your cart</title>
+
+    <!-- No 'defer' attribute here!
+     view-cart.js should do an update fetch first, before we render any elements in the body-->
+    <script type="module" src="/static/js/view-cart.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+</head>
+<body>
+
+<div class="container">
+    <div id="products" class="row">
+        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="item,iterStat : ${order}">
+            <div class="card">
+                <img class="" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${item.getProductId()} + '.jpg'" alt="" />
+                <div class="card-header">
+                    <h4 class="card-title" th:text="${item.getProductName()}">Product name</h4>
+
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <p class="lead" th:text="${item.getProductPrice()}">100 USD</p>
+                    </div>
+                    <div class="card-text">
+                        <p class="lead">Quantity: </p>
+                        <div class="lead" th:text="${item.getQuantity()}">100 USD</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

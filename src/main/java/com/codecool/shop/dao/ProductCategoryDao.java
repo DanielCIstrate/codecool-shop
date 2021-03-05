@@ -11,5 +11,7 @@ public interface ProductCategoryDao {
     void remove(int id);
 
     List<ProductCategory> getAll();
+    
+    void initializeWithStoredCategories(); 
 
 }
