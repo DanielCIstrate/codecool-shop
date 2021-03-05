@@ -42,7 +42,7 @@ public class OrderDaoMem implements OrderDao {
 
     @Override
     public List<Order> getAll() {
-        return data;
+        return new ArrayList<>(data);
     }
 
     @Override
