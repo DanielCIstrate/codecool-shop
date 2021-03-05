@@ -9,7 +9,7 @@ public abstract class SimpleLineItem {
         this.productId = productId;
     }
 
-    protected int getProductId() {
+    public int getProductId() {
         return this.productId;
     }
 
