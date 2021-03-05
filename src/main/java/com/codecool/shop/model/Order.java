@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order extends BaseModel {
 
@@ -55,16 +56,8 @@ public class Order extends BaseModel {
     }
 
     public static Order deserializeFromBuffer(BufferedReader reader) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Order deserialized = null;
-        try {
-            deserialized = objectMapper.readValue(reader, Order.class);
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-        return deserialized;
+        String dataBeingRead = reader.lines().collect(Collectors.joining());
+        return deserializeFromString(dataBeingRead);
     }
 
     public static Order deserializeFromString(String json) {
