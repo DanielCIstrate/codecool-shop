@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order extends BaseModel {
@@ -44,13 +45,10 @@ public class Order extends BaseModel {
         }
     }
 
-    public void buildFromSimpleLineItem(List<SimpleLineItem> itemList) {
-        LineItem currentItem;
-        for (SimpleLineItem item : itemList) {
-            currentItem = (LineItem) item;
-            currentItem.updateProductPrice();
-            this.addToOrder(currentItem);
-        }
+    public void rebuildFromLineItems(List<LineItem> itemList) {
+        if (this.itemList != null) { this.itemList.clear(); }
+        else { this.itemList = new ArrayList<>(); }
+        itemList.forEach(this::addToOrder);
     }
 
     public static Order deserializeFromBuffer(BufferedReader reader) {
