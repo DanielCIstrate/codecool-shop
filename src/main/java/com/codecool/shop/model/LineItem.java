@@ -4,6 +4,7 @@ import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.ProductDao;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,8 +48,8 @@ public class LineItem extends SimpleLineItem{
         List<LineItem> deserializedList = null;
         try {
             deserializedList = objectMapper.readValue(json, new TypeReference<List<LineItem>>() {});
-        } catch (Exception e) {
-
+        } catch (JsonProcessingException e) {
+            //TODO should throw new RuntimeException here and handle it further down the code
             e.printStackTrace();
         }
         return deserializedList;

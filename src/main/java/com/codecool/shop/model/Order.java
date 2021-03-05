@@ -2,6 +2,7 @@ package com.codecool.shop.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -66,8 +67,8 @@ public class Order extends BaseModel {
         Order deserialized = null;
         try {
             deserialized = objectMapper.readValue(json, Order.class);
-        } catch (Exception e) {
-
+        } catch (JsonProcessingException e) {
+            //TODO should throw new RuntimeException here and handle it further down the code
             e.printStackTrace();
         }
         return deserialized;
