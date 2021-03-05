@@ -1,5 +1,7 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.model.Order;
 
 import javax.servlet.ServletException;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 @MultipartConfig
 public class OrderCreatorController extends HttpServlet {
 
-    private List<Order> orders = new ArrayList<>();
+    private OrderDao orderDataStore = OrderDaoMem.getInstance();
 
     @Override
     protected void doPost(
