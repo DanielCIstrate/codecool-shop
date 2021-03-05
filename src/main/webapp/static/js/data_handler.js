@@ -22,7 +22,8 @@ export let dataHandler = {
                 Accept: "application/json",
             },
         })
-            .then(callback(data));
+            .then(response => response.json())
+            .then(json_response => callback(json_response));
     },
 
     addLineItemInOrderJSON(productId, quantity) {
@@ -64,7 +65,37 @@ export let dataHandler = {
         this._api_post(
             "/create-order",
             {"userId": userId, "name": Date.now().toString()},
-            () => {});
+            (json_response) => {
+                console.log("Received upon creating new order: ");
+                console.log(json_response);
+                this._data["orderId"] = json_response['orderId'];
+                this.setSessionItem('data', this._data);
+            });
+    },
+
+    updateOrderOnServer() {
+        let data = this.getSessionItem('data');
+        let orderId;
+        if (data.hasOwnProperty('orderId')) {
+            orderId = data['orderId'];
+            this.doUpdateOrderFetchWithOrderId(orderId)
+        }
+        else {
+            this.createNewOrderOnServer()
+            data = this.getSessionItem('data'); // refreshing data after
+            orderId = data['orderId'];
+            this.doUpdateOrderFetchWithOrderId(orderId)
+        }
+    },
+
+    doUpdateOrderFetchWithOrderId(orderId) {
+        let userId = this.getSessionItem('userId');
+        if (data.hasOwnProperty('order')) {
+            let order = data['order'];
+            this._api_post("/update-order",
+                {"userId": userId, "orderId": orderId, "item_list": order},
+                json_response => console.log(json_response))
+        }
     },
 
     setSessionItem(name, value) {
