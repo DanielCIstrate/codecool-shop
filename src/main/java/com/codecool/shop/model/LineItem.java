@@ -13,6 +13,7 @@ import java.util.List;
 
 public class LineItem extends SimpleLineItem{
     private float productPrice;
+    private String productName;
 
     public LineItem(int productId, int quantity, float productPrice) {
         super(productId, quantity);
@@ -23,15 +24,16 @@ public class LineItem extends SimpleLineItem{
     public LineItem(@JsonProperty("productId")int productId, @JsonProperty("quantity")int quantity) {
         super(productId, quantity);
         this.productPrice = 0.0f;
-        updateProductPrice();
+        updateProductDetails();
     }
 
-    public void updateProductPrice() {
+    public void updateProductDetails() {
         ProductDao dataStoreForProduct = ProductController.getProductDaoInstance();
         Product product;
         product = dataStoreForProduct.find(this.getProductId());
         if (product != null) {
             productPrice = product.getDefaultPrice();
+            productName = product.getName();
         }
     }
 
@@ -52,4 +54,8 @@ public class LineItem extends SimpleLineItem{
         return deserializedList;
     }
 
+
+    public String getProductName() {
+        return productName;
+    }
 }
