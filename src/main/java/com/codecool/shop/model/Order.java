@@ -45,10 +45,13 @@ public class Order extends BaseModel {
         }
     }
 
-    public void rebuildFromLineItems(List<LineItem> itemList) {
+    public void rebuildFromLineItems(List<LineItem> newItemList) {
         if (this.itemList != null) { this.itemList.clear(); }
         else { this.itemList = new ArrayList<>(); }
-        itemList.forEach(this::addToOrder);
+
+        if (newItemList != null) {
+            newItemList.forEach(this::addToOrder);
+        }
     }
 
     public static Order deserializeFromBuffer(BufferedReader reader) {
