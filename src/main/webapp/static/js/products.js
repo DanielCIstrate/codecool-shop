@@ -20,8 +20,8 @@ window.onload = function() {
     }
 
     function handleEmptyCartClick(event) {
-        alert("Would now clear all cart!")
-        // dataHandler.clearOrder();
+        dataHandler.clearOrder();
+        cartCounter.innerText = 0;
     }
 
     addToCartButtons.forEach(button => {

@@ -119,6 +119,14 @@ export let dataHandler = {
         }
     },
 
+    clearOrder() {
+        let data = this.getSessionItem('data');
+        delete data['orderId'];
+        delete data['order'];
+        this.setSessionItem('data', data);
+        this._data = data;
+    },
+
     setSessionItem(name, value) {
         var mySession;
         try {
