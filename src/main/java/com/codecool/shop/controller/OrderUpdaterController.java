@@ -1,6 +1,9 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.Order;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = {"/update-order"})
 public class OrderUpdaterController extends HttpServlet {
 
+    private OrderDao orderDataStore = OrderDaoMem.getInstance();
+
     @Override
     protected void doPost(
             HttpServletRequest request,
@@ -27,11 +32,18 @@ public class OrderUpdaterController extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         final ObjectNode orderChunkAsNode = objectMapper.readValue(requestData, ObjectNode.class);
         if (orderChunkAsNode.has("orderId")) {
-            System.out.println("Got order id=" + orderChunkAsNode.get("orderId"));
-            String itemListAsString = orderChunkAsNode.get("item_list").toString();
-            System.out.println("Order:"+itemListAsString);
-            List<LineItem> itemList = LineItem.deserializeListFromString(itemListAsString);
-            itemList.forEach(item -> System.out.println("quantity: "+item.getQuantity()));
+//            System.out.println("Got order id=" + orderChunkAsNode.get("orderId"));  // debug logging
+            int orderId = orderChunkAsNode.get("orderId").asInt();
+            Order orderToUpdate = orderDataStore.find(orderId);
+//            System.out.println("Found order instance with that id as "+ orderToUpdate.toString());  // debug print
+            if (orderToUpdate != null && orderChunkAsNode.has("item_list")) {
+                String itemListAsString = orderChunkAsNode.get("item_list").toString();
+//                System.out.println("Item list:"+itemListAsString);  // debug logging
+                List<LineItem> itemList = LineItem.deserializeListFromString(itemListAsString);
+//                itemList.forEach(item -> System.out.println("Price for 1x: "+item.getProductPrice()));  // debug logging
+                orderToUpdate.rebuildFromLineItems(itemList);
+//                System.out.println("Total Price: "+orderToUpdate.getTotalPrice());    // debug log
+            }
         }
     }
 }
