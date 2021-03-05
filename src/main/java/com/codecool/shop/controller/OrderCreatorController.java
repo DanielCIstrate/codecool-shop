@@ -37,8 +37,9 @@ public class OrderCreatorController extends HttpServlet {
         int senderId = newOrder.getSenderId();
         if ( orderDataStore.hasOrderFromUser(senderId) ) {
             newOrder = orderDataStore.getFirstOrderFrom(senderId);
+        } else {
+            addOrder(newOrder);
         }
-        addOrder(newOrder);
 
         // Debug output for success
         //
