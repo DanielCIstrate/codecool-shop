@@ -1,0 +1,79 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+
+namespace controller {
+    class OrderReviewController extends javax.servlet.http.HttpServlet {
+        - orderDataStore: OrderDao
+
+        + doGet(request: HSRequest, response:HSResponse): void
+    }
+
+    OrderReviewController::orderDataStore -right-> dao.OrderDao
+
+
+}
+
+namespace model {
+    class BaseModel {}
+
+    class Order extends BaseModel {
+        - senderId : int
+        - itemList : List<LineItem>
+    }
+
+    class LineItem {}
+
+    Order::itemList o-- LineItem
+}
+
+namespace dao {
+    interface OrderDao {
+         + add(order : Order) : void
+         + find(id : int) : Order
+         + remove(id : int) : void
+         + getAll() : List<Order>
+         + hasOrderFromUser(userId : int) : boolean
+         + getFirstOrderFrom(userId : int) : Order
+         }
+}
+
+
+
+namespace thymeleaf {
+    namespace context{
+        class WebContext {}
+    }
+}
+
+
+
+    controller.OrderReviewController ..> thymeleaf      : <<imports>>
+
+    controller.OrderReviewController  ..> model.Order  : <<imports>>
+    thymeleaf.context.WebContext o-- model.Order
+
+
+
+
+
+    note top of controller.OrderReviewController
+        View Cart - "/view-cart"
+                            route
+    endnote
+
+
+    note right of thymeleaf.context.WebContext
+            This is 'sort of' a hashmap used for
+            filling out html templates
+            Here, it has <b>key</b> "order" for <b>value</b> Order.itemList
+    endnote
+
+
+
+
+
+
+
+@enduml
