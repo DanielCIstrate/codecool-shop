@@ -42,9 +42,6 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public List<ProductCategory> getAll() {
-<<<<<<< HEAD
-        return data;
-=======
         return new ArrayList<>(data);
     }
 
@@ -56,6 +53,5 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
         data.add(tablet);
         data.add(laptop);
         data.add(desktop);
->>>>>>> upstream/master
     }
 }

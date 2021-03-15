@@ -7,12 +7,9 @@
 
     <title>Codecool Shop</title>
 
-<<<<<<< HEAD
-=======
     <!-- FontAwesome -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
->>>>>>> upstream/master
     <!-- Bootstrap components -->
     <!-- Latest compiled and minified Jquery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -30,15 +27,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
-<<<<<<< HEAD
-
-    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
-=======
     <script type="module" src="/static/js/products.js" defer></script>
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 
-
->>>>>>> upstream/master
 </head>
 
 <body>
@@ -47,12 +38,7 @@
     <h1>Codecool Shop</h1>
 </div>
 
-<<<<<<< HEAD
-<div class="container">
-    <div class="card">
-        <strong th:text="${category.name}">Category Title</strong>
-    </div>
-=======
+
 <div class="header navigation">
     <a class="btn btn-danger emptyCartButton" data-toggle="modal" data-target="#emptyCartModal">Empty cart</a>
     <a href="/view-cart" id="cartIconAnchor" class="cart position-relative d-inline-flex" aria-label="View your shopping cart">
@@ -100,7 +86,6 @@
 <!--    <div class="card">-->
 <!--&lt;!&ndash;        <strong th:text="${category.name} ?: 'Products'">Category Title</strong>&ndash;&gt;-->
 <!--    </div>-->
->>>>>>> upstream/master
 
     <div id="products" class="row">
         <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">
@@ -115,11 +100,7 @@
                         <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                     </div>
                     <div class="card-text">
-<<<<<<< HEAD
-                        <a class="btn btn-success" href="#">Add to cart</a>
-=======
                         <a class="btn btn-success addToCartButton" href="#" th:attr="data-product-id=${prod.id},data-product-name=${prod.name}">Add to cart</a>
->>>>>>> upstream/master
                     </div>
                 </div>
             </div>
@@ -128,8 +109,7 @@
 
 </div>
 
-<<<<<<< HEAD
-=======
+
 <!-- Modals (Not displayed on load) -->
 
 <div th:replace="modals.html :: emptyCartConfirm"></div>
@@ -137,7 +117,6 @@
 
 <!-- END Modals -->
 
->>>>>>> upstream/master
 <div th:replace="footer.html :: copy"></div>
 
 </body>
