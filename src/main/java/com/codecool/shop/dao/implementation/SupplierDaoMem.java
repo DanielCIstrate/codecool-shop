@@ -41,6 +41,10 @@ public class SupplierDaoMem implements SupplierDao {
 
     @Override
     public List<Supplier> getAll() {
+<<<<<<< HEAD
         return data;
+=======
+        return new ArrayList<>(data);
+>>>>>>> upstream/master
     }
 }

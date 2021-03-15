@@ -16,4 +16,6 @@ public interface ProductDao {
     List<Product> getBy(Supplier supplier);
     List<Product> getBy(ProductCategory productCategory);
 
+    List<Product> getIntersection(ProductCategory someCategory, Supplier someSupplier);
+
 }
