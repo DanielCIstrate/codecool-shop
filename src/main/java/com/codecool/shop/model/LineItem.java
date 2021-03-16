@@ -59,4 +59,12 @@ public class LineItem extends SimpleLineItem{
     public String getProductName() {
         return productName;
     }
+
+    public String getSubtotalAsString() {
+        return String.format("%.2f",productPrice*this.getQuantity());
+    }
+
+    public float getSubtotal() {
+        return productPrice*this.getQuantity();
+    }
 }

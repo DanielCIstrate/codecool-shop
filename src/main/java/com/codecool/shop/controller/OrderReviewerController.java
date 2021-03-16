@@ -40,6 +40,7 @@ public class OrderReviewerController extends HttpServlet {
         WebContext context = new WebContext(request, response, request.getServletContext());
         if (currentOrder != null && currentOrder.getItemList() != null) {
             context.setVariable("order", currentOrder.getItemList());
+            context.setVariable("orderTotal", currentOrder.getTotalAsString());
         }
 
         engine.process("cart.html", context, response.getWriter());

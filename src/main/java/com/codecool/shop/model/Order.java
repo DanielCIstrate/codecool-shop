@@ -82,4 +82,17 @@ public class Order extends BaseModel {
         if (this.itemList == null) { return null; };
         return new ArrayList<>(this.itemList);
     }
+
+    public float getTotal() {
+        float sum = 0.0f;
+        for (LineItem item: itemList) {
+            sum+=item.getSubtotal();
+        }
+
+        return sum;
+    }
+
+    public String getTotalAsString() {
+        return String.format("%.2f",this.getTotal());
+    }
 }
