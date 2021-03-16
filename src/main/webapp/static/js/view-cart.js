@@ -1,10 +1,19 @@
 import {dataHandler} from "/static/js/data_handler.js";
 
-window.addEventListener('load', function(event) {
-   dataHandler.init();
-}, false);
+window.addEventListener(
+    'load',
+    function(event) {
+         dataHandler.init();
+    },
+    false
+);
 
 let data = dataHandler.getSessionItem("data");
-if (data.hasOwnProperty("orderId")) {
 
+let checkOutButton = document.querySelector(".checkoutButton");
+
+function handleCheckOutButtonClick(event) {
+    dataHandler.checkOutOrder();
 }
+
+checkOutButton.addEventListener('click', (event) => handleCheckOutButtonClick(event))

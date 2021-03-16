@@ -127,6 +127,33 @@ export let dataHandler = {
         this._data = data;
     },
 
+    checkOutOrder() {
+        let data = this.getSessionItem('data');
+        let orderId;
+        if (data.hasOwnProperty('orderId')) {
+            orderId = data['orderId'];
+            this.doCheckOutOrderFetchWithOrderId(orderId, data)
+        }
+        else {
+            //TODO Handle what happens when we checkout with orderId not available locally
+            alert("Unable to checkout! Feature not implemented yet!")
+        }
+    },
+
+    doCheckOutOrderFetchWithOrderId(orderId, data) {
+        let userId = this.getSessionItem('userId');
+        if (data.hasOwnProperty('order')) {
+            this._api_post("/checkout",
+                {"userId": userId, "orderId": orderId},
+                json_response => this.doCheckOutPageLogic(json_response))
+        }
+    },
+
+    doCheckOutPageLogic(json_response) {
+       //TODO Do a GET for the /checkout route here
+      // alert("Checkout proceeded successfully")
+    },
+
     setSessionItem(name, value) {
         var mySession;
         try {
