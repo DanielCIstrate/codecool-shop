@@ -9,14 +9,16 @@
     <!-- No 'defer' attribute here!
      view-cart.js should do an update fetch first, before we render any elements in the body-->
     <script type="module" src="/static/js/view-cart.js"></script>
-    <!-- Jquery ui javascript  -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Bootstrap CSS  -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/cart.css" />
 </head>
 <body>
 
 <div class="container">
-    <div id="products" class="row">
+    <div id="products">
         <table>
                 <th>
                     <td>Product</td>
@@ -24,32 +26,41 @@
                     <td>Quantity</td>
                     <td>Subtotal</td>
                 </th>
-                <div class="col col-sm-12 col-md-6 col-lg-4" th:each="item,iterStat : ${order}">
+                <div th:each="item,iterStat : ${order}">
                     <tr>
-                        <div class="card">
+                        <div>
                             <td>
                                 <img class="" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${item.getProductId()} + '.jpg'" alt="" height="100px"  />
                             </td>
                             <td>
-                                <div class="card-header">
-                                    <h4 class="card-title" th:text="${item.getProductName()}">Product name</h4>
+                                <div >
+                                    <h4 th:text="${item.getProductName()}">Product name</h4>
 
                                 </div>
                             </td>
                             <td>
-                                <div class="card-text">
-                                    <p class="lead" th:text="${item.getProductPrice()}">100 USD</p>
+                                <div>
+                                    <p th:text="${item.getProductPrice()}">100 USD</p>
                                 </div>
                             </td>
                             <td>
-                                <div class="card-text">
 
-                                    <div class="lead" th:text="${item.getQuantity()}">Number of Items</div>
+                                <div class="quantity-column">
+                                    <input class="form-control"
+                                           style="width: 30%"
+                                           type="number"
+                                           min="0"
+                                           th:value="${item.getQuantity()}"
+                                           th:attr="data-product-id=${item.getProductId()}"
+                                           name="itemQuantity">
+                                    <button class="decrementButton btn btn-outline-dark btn-sm">-</button>
+                                    <button class="incrementButton btn btn-outline-dark btn-sm">+</button>
                                 </div>
+
                             </td>
                             <td>
-                                <div class="card-text">
-                                    <div class="lead" th:text="${item.getSubtotalAsString()}">Subtotal Price</div>
+                                <div>
+                                    <div th:text="${item.getSubtotalAsString()}">Subtotal Price</div>
                                 </div>
                             </td>
 
@@ -62,17 +73,25 @@
             </tr>
 
             <tr>
+                <td>
+                    <br>
+                </td>
+            </tr>
+            <tr>
                 <td>Total Of</td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td>    </td>
                 <td>
-                    <div class="lead" th:text="${orderTotal}">Total</div>
+                    <div th:text="${orderTotal}">Total</div>
                 </td>
 
             </tr>
         </table>
     </div>
 </div>
+
+<button class="btn btn-success">Update cart</button>
+
 </body>
 </html>
