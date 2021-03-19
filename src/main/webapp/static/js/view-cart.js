@@ -1,5 +1,6 @@
 import {dataHandler} from "/static/js/data_handler.js";
 
+
 async function handleUpdateOrderBtnClick(event) {
     await dataHandler.updateOrderOnServer();
     location.reload();
@@ -55,4 +56,16 @@ window.addEventListener('load', function(event) {
 // let data = dataHandler.getSessionItem("data");
 
 
+
+
+
+let data = dataHandler.getSessionItem("data");
+
+let checkOutButton = document.querySelector(".checkoutButton");
+
+function handleCheckOutButtonClick(event) {
+    dataHandler.checkOutOrder();
+}
+
+checkOutButton.addEventListener('click', (event) => handleCheckOutButtonClick(event))
 
