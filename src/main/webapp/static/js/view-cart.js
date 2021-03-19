@@ -1,5 +1,10 @@
 import {dataHandler} from "/static/js/data_handler.js";
 
+async function handleUpdateOrderBtnClick(event) {
+    await dataHandler.updateOrderOnServer();
+    location.reload();
+}
+
 window.addEventListener('load', function(event) {
 
     function increment(triggerButton) {
@@ -24,6 +29,7 @@ window.addEventListener('load', function(event) {
 
    let incrementButtons = document.querySelectorAll(".incrementButton");
    let decrementButtons = document.querySelectorAll(".decrementButton");
+   let updateOrderButton = document.querySelector(".updateOrderButton");
 
    decrementButtons.forEach(button => {
            button.addEventListener(
@@ -38,6 +44,11 @@ window.addEventListener('load', function(event) {
                   (event) => increment(event.target)
               )
           });
+
+   updateOrderButton.addEventListener(
+       'click',
+       (event) => handleUpdateOrderBtnClick(event)
+   )
 
 }, false);
 

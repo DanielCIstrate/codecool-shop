@@ -22,8 +22,11 @@
         <table>
                 <th>
                     <td>Product</td>
+                    <td>
+                        <div style="width: 20px"> </div>
+                    </td>
                     <td>Price</td>
-                    <td>Quantity</td>
+                    <td style="text-align: center">Quantity</td>
                     <td>Subtotal</td>
                 </th>
                 <div th:each="item,iterStat : ${order}">
@@ -39,8 +42,11 @@
                                 </div>
                             </td>
                             <td>
-                                <div>
-                                    <p th:text="${item.getProductPrice()}">100 USD</p>
+                                <div style="width: 20px"> </div>
+                            </td>
+                            <td>
+                                <div th:text="${item.getProductPrice()}">
+                                    100 USD
                                 </div>
                             </td>
                             <td>
@@ -79,6 +85,9 @@
             </tr>
             <tr>
                 <td>Total Of</td>
+                <td>
+                    <div style="width: 20px"> </div>
+                </td>
                 <td></td>
                 <td></td>
                 <td>    </td>
@@ -91,7 +100,7 @@
     </div>
 </div>
 
-<button class="btn btn-success">Update cart</button>
+<button class="btn btn-success updateOrderButton">Update cart</button>
 
 </body>
 </html>
