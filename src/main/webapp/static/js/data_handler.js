@@ -150,7 +150,7 @@ export let dataHandler = {
     },
 
     doCheckOutPageLogic(json_response) {
-       //TODO Do a GET for the /checkout route here
+       window.location.href("/checkout")
       // alert("Checkout proceeded successfully")
     },
 
