@@ -10,6 +10,7 @@ window.onload = function() {
     let emptyCartConfirmButton = document.querySelector("#emptyCartConfirm");
     let cartCounter = document.querySelector(".cart-basket")
     let cartIcon = document.querySelector("#cartIconAnchor")
+    let productImages = document.querySelectorAll(".itemImage")
     cartCounter.innerText = dataHandler.getTotalQuantityForOrder();
 
     function handleAddToCartClick(event, targetButton) {
@@ -33,6 +34,35 @@ window.onload = function() {
         }
     }
 
+
+    function imageHandleOnMouseOver(event) {
+        let productId = parseInt(event.target.dataset.productId);
+        console.log("Product Id is " + productId);
+        event.target.src='/static/img/product_change_' + productId + '.jpg';
+    }
+
+    function imageHandleOnMouseOut(event) {
+        let productId = parseInt(event.target.dataset.productId);
+        console.log("Product Id is " + productId);
+        event.target.src='/static/img/product_' + productId + '.jpg';
+    }
+
+
+    productImages.forEach(image => {
+        image.addEventListener(
+            'mouseenter',
+            event => imageHandleOnMouseOver(event)
+        )
+    });
+
+    productImages.forEach(image =>{
+        image.addEventListener(
+            'mouseleave',
+            event => imageHandleOnMouseOut(event)
+        )
+    });
+
+
     addToCartButtons.forEach(button => {
         button.addEventListener(
             'click',
@@ -42,12 +72,12 @@ window.onload = function() {
 
     emptyCartConfirmButton.addEventListener(
         'click',
-        (event) => handleEmptyCartClick(event))
+        (event) => handleEmptyCartClick(event));
 
     cartIcon.addEventListener(
         'click',
         (event) => handleCartIconClick(event)
-    )
+    );
 
 
 
