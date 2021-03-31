@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ProductDaoJdbc implements ProductDao {
     private DataSource dataSource;
+
     public ProductDaoJdbc(DataSource newDataSource) {
         this.dataSource = newDataSource;
     }
@@ -46,45 +47,61 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public Product find(int id) {
+        // for duplication we could first check if id is in a list/set variable and only then get it from the SQL
+
         // 2. get just the Product object information and get the Supplier and CategoryProduct via other methods
         String currentName;
         float currentPrice;
         String currentCurrencyType;
         String currentDescription;
+        int supplierId;
+        int categoryId;
 
         try (Connection connectionObject = dataSource.getConnection()) {
   
-            String sqlQuery = "SELECT (id, name, description, default_price, default_currency) FROM product"
-            + "WHERE (id = ?)";
-        PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
-        precompiledQuery.setInt(1, id);
-        precompiledQuery.executeQuery();
-        ResultSet  resultSet = precompiledQuery.getGeneratedKeys();
-        resultSet.next();
-         
-        
+            String sqlQuery = "SELECT name, description, default_price, default_currency, " +
+                    "supplier_id, category_id FROM product " +
+                    "WHERE (id = ?)";
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
+            precompiledQuery.setInt(1, id);
+            precompiledQuery.executeQuery();
+            ResultSet  resultSet = precompiledQuery.getGeneratedKeys();
+            if (!resultSet.next()) {
+                return null;
+            }
+            else {
+                currentName = resultSet.getString(1);
+                currentDescription = resultSet.getString(2);
+                currentPrice = resultSet.getFloat(3);
+                currentCurrencyType = resultSet.getString(4);
+                supplierId = resultSet.getInt(5);
+                categoryId = resultSet.getInt(6);
+            }
+
         
         } catch (SQLException error) {
-            
+            throw new RuntimeException("Error while attempting to get Product with id="+id+" from DB!");
         }
 
 
         
-        // get Supplier object for supplier_id - WORRY ABOUT DUPLICATION LATER
-        // ... Supplier currentSupplier = SupplierDaoJdbc.find(supplier_id)
+        // WORRY ABOUT DUPLICATION LATER
+        Supplier currentSupplier = DatabaseManager.getInstance().getSupplierDao().find(supplierId);
 
         // get ProductCategory object for category_id
-        // ... ProductCategory currentCategory = ProductCategoryDaoJdbc.find(category_id)
+        ProductCategory currentCategory = DatabaseManager.getInstance().getProductCategoryDao().find(categoryId);
 
-        Product = new Product(
+
+        Product foundProduct = new Product(
             currentName,
             currentPrice,
             currentCurrencyType,
-            description,
+            currentDescription,
             currentCategory,
             currentSupplier
         );
-        // Product.setId()
+        foundProduct.setId(id);
+        return foundProduct;
     }
 
     @Override

@@ -9,13 +9,37 @@ import java.sql.SQLException;
 
 
 public class DatabaseManager {
+    private static DatabaseManager instance;
     private ProductDaoJdbc productDao;
+    private SupplierDaoJdbc supplierDao;
+    private ProductCategoryDaoJdbc productCategoryDao;
 
     public void setup() throws SQLException, InvalidKeyException {
         DataSource dataSource = connect();
 
         productDao = new ProductDaoJdbc(dataSource);
+        supplierDao = new SupplierDaoJdbc(dataSource);
+        productCategoryDao = new ProductCategoryDaoJdbc(dataSource);
+    }
 
+    public ProductDaoJdbc getProductDao() {
+        return productDao;
+    }
+
+    public SupplierDaoJdbc getSupplierDao() {
+        return supplierDao;
+    }
+
+    public ProductCategoryDaoJdbc getProductCategoryDao() {
+        return productCategoryDao;
+    }
+    
+    public static DatabaseManager getInstance() {
+        if (instance == null) {
+            return new DatabaseManager();
+            
+        }
+        return instance;
     }
 
     private DataSource connect() throws SQLException, InvalidKeyException {
