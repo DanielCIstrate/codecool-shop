@@ -1,13 +1,12 @@
 package com.codecool.shop.dao.implementation.sql;
 
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierDaoJdbc implements SupplierDao {
@@ -18,7 +17,27 @@ public class SupplierDaoJdbc implements SupplierDao {
     }
     @Override
     public void add(Supplier supplier) {
+        try(Connection connectionObject = dataSource.getConnection()) {
+            String sqlQuery = "INSERT INTO supplier (" +
+                    "name, description" +
+                    ") VALUES (?, ?)";
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(
+                    sqlQuery,
+                    Statement.RETURN_GENERATED_KEYS
+            );
 
+
+            precompiledQuery.setString(1, supplier.getName());
+            precompiledQuery.setString(2, supplier.getDescription());
+            precompiledQuery.executeUpdate();
+
+            ResultSet resultCursor = precompiledQuery.getGeneratedKeys();
+            resultCursor.next();
+            supplier.setId(resultCursor.getInt(1));
+
+        } catch (SQLException error) {
+            throw new RuntimeException("Error while adding new supplier.", error);
+        }
     }
 
     @Override
@@ -53,11 +72,56 @@ public class SupplierDaoJdbc implements SupplierDao {
 
     @Override
     public void remove(int id) {
+        try (
+                Connection connectionObject = dataSource.getConnection()
+        ) {
+            String sqlQuery = "DELETE FROM supplier WHERE (id = ?) " +
+                    "RETURNING name";
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
+            precompiledQuery.setInt(1, id);
+            precompiledQuery.executeQuery();
+
+            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            if (!resultSet.next()) {
+                throw new IllegalArgumentException("Could not remove Supplier id = " + id );
+            }
+
+        } catch (SQLException err) {
+            throw new RuntimeException("Error while trying to remove Supplier with id="+id);
+        }
 
     }
 
     @Override
     public List<Supplier> getAll() {
-        return null;
+        List<Supplier> listofAllSuppliers = new ArrayList<>();
+        String currentName;
+        String currentDescription;
+        int currentId;
+        try (
+                Connection connectionObject = dataSource.getConnection()
+        ) {
+            String sqlQuery = "SELECT id, name, description FROM supplier";
+
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
+            precompiledQuery.executeQuery();
+
+            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+
+            while (resultSet.next()) {
+                currentId = resultSet.getInt(1);
+                currentName = resultSet.getString(2);
+                currentDescription = resultSet.getString(3);
+
+
+                Supplier foundSupplier = new Supplier(currentName,currentDescription);
+                foundSupplier.setId(currentId);
+
+                listofAllSuppliers.add(foundSupplier);
+            }
+        } catch (SQLException error) {
+            throw new RuntimeException("Error while attempting to get all Suppliers from DB!");
+        }
+        return listofAllSuppliers;
     }
 }
