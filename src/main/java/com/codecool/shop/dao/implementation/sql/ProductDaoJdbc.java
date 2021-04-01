@@ -6,6 +6,7 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
 import javax.sql.DataSource;
+import java.security.InvalidKeyException;
 import java.sql.*;
 import java.util.List;
 
@@ -83,14 +84,20 @@ public class ProductDaoJdbc implements ProductDao {
             throw new RuntimeException("Error while attempting to get Product with id="+id+" from DB!");
         }
 
+        //TODO find a way not to use nulls here
+        Supplier currentSupplier = null;
+        ProductCategory currentCategory = null;
 
-        
+        try {
         // WORRY ABOUT DUPLICATION LATER
-        Supplier currentSupplier = DatabaseManager.getInstance().getSupplierDao().find(supplierId);
+            currentSupplier = DatabaseManager.getInstance().getSupplierDao().find(supplierId);
 
         // get ProductCategory object for category_id
-        ProductCategory currentCategory = DatabaseManager.getInstance().getProductCategoryDao().find(categoryId);
-
+            currentCategory = DatabaseManager.getInstance().getProductCategoryDao().find(categoryId);
+        } catch (SQLException | InvalidKeyException e) {
+            
+            throw new RuntimeException("Could not connect Category and Supplier when getting Product", e);
+        }
 
         Product foundProduct = new Product(
             currentName,

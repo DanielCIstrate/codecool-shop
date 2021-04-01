@@ -13,6 +13,7 @@ public class DatabaseManager {
     private ProductDaoJdbc productDao;
     private SupplierDaoJdbc supplierDao;
     private ProductCategoryDaoJdbc productCategoryDao;
+    private UserDaoJdbc userDao;
 
     public void setup() throws SQLException, InvalidKeyException {
         DataSource dataSource = connect();
@@ -20,6 +21,7 @@ public class DatabaseManager {
         productDao = new ProductDaoJdbc(dataSource);
         supplierDao = new SupplierDaoJdbc(dataSource);
         productCategoryDao = new ProductCategoryDaoJdbc(dataSource);
+        userDao = new UserDaoJdbc(dataSource);
     }
 
     public ProductDaoJdbc getProductDao() {
@@ -33,10 +35,14 @@ public class DatabaseManager {
     public ProductCategoryDaoJdbc getProductCategoryDao() {
         return productCategoryDao;
     }
+
+    public UserDaoJdbc getUserDao() {return userDao;}
     
-    public static DatabaseManager getInstance() {
+    public static DatabaseManager getInstance() throws SQLException, InvalidKeyException {
         if (instance == null) {
-            return new DatabaseManager();
+            DatabaseManager newManager = new DatabaseManager();
+            newManager.setup();
+            return newManager;
             
         }
         return instance;
