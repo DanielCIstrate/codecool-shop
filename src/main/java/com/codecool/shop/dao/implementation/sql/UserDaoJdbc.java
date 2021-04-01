@@ -6,7 +6,9 @@ import com.codecool.shop.model.User;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserDaoJdbc implements UserDao {
     private DataSource dataSource;
@@ -171,12 +173,75 @@ public class UserDaoJdbc implements UserDao {
     }
 
     @Override
-    public String setPasswordFor(String username) {
-        return null;
+    public void setPasswordFor(String username, String newPassword) {
+        try (
+                Connection connectionObject = dataSource.getConnection()
+        ) {
+
+            String sqlQuery = "UPDATE public.user SET password = ? " +
+                    "WHERE (name = ?) RETURNING name";
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
+            precompiledQuery.setString(1, newPassword);
+            precompiledQuery.setString(2, username);
+            precompiledQuery.executeQuery();
+            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            if (!resultSet.next()) {
+                throw new IllegalArgumentException("Could not find User with name: " + username);
+            }
+
+
+        } catch (SQLException error) {
+            throw new RuntimeException("Error while attempting to update User with name=" + username + " from DB!");
+        }
+
+    }
+
+    @Override
+    public Set<String> getUsernameSet() {
+        Set<String> userNameSet = new HashSet<>();
+        String currentName;                
+        try (
+                Connection connectionObject = dataSource.getConnection()
+        ) {
+
+            String sqlQuery = "SELECT name FROM public.user";
+
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
+            precompiledQuery.executeQuery();
+
+            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+
+            while (resultSet.next()) {
+                currentName = resultSet.getString(1);
+                userNameSet.add(currentName);
+            }
+        } catch (SQLException error) {
+            throw new RuntimeException("Error while attempting to get set of user names from DB!");
+        }
+
+        return userNameSet;
     }
 
     @Override
     public void updateUser(User user) {
+        try (
+                Connection connectionObject = dataSource.getConnection()
+        ) {
 
+            String sqlQuery = "UPDATE public.user SET name = ?, email = ? " +
+                    "WHERE (id = ?) RETURNING name";
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
+            precompiledQuery.setString(1, user.getName());
+            precompiledQuery.setString(2, user.getEmail());
+            precompiledQuery.executeQuery();
+            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            if (!resultSet.next()) {
+                throw new IllegalArgumentException("Could not find User with id: " + user.getId());
+            }
+
+
+        } catch (SQLException error) {
+            throw new RuntimeException("Error while attempting to update User with id=" + user.getId() + " from DB!");
+        }
     }
 }
