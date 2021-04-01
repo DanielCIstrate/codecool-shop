@@ -2,7 +2,6 @@ package com.codecool.shop.dao.implementation.sql;
 
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -64,8 +63,4 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
         return null;
     }
 
-    @Override
-    public void initializeWithStoredCategories() {
-
-    }
 }
