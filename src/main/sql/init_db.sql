@@ -53,7 +53,15 @@ DROP TABLE IF EXISTS public.user;
 CREATE TABLE public.user (
                              id serial NOT NULL PRIMARY KEY,
                              name VARCHAR NOT NULL,
+                             password VARCHAR NOT NULL,
+                             email VARCHAR NOT NULL,
                              description VARCHAR
+);
+
+DROP TABLE IF EXISTS public.finalorders_users;
+CREATE TABLE public.finalorders_users (
+                             final_order_id integer NOT NULL,
+                             user_id integer NOT NULL
 );
 
 DROP TABLE IF EXISTS public.orders_products;
@@ -136,3 +144,13 @@ ALTER TABLE ONLY public.finalorders_products
 
 ALTER TABLE ONLY public.finalorders_products
     ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES public.product(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.finalorders_users
+    ADD CONSTRAINT pk_finalorder_user_id PRIMARY KEY (final_order_id, user_id);
+
+ALTER TABLE ONLY public.finalorders_users
+    ADD CONSTRAINT fk_finalorder_id FOREIGN KEY (final_order_id) REFERENCES public.final_order(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.finalorders_users
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES public.user(id) ON DELETE CASCADE;
+

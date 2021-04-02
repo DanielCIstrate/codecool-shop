@@ -56,6 +56,8 @@ public class ProductController extends HttpServlet {
         List<Product> productsByCategory = displayFilteredByCategory(categoryId, productDataStore, selectedCategory);
         List<Product> productsBySupplier = displayFilteredBySupplier(supplierId, productDataStore, selectedSupplier);
 
+        /*  This is where we perform a filter action on the intersection
+        * between supplier x category   */
         productsByCategory.retainAll(productsBySupplier);
 
         List<Product> finalList = productsByCategory;
@@ -64,35 +66,9 @@ public class ProductController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productCategoryDataStore.getAll());
-//        context.setVariable("category", productCategoryDataStore.find(categoryId));
         context.setVariable("suppliers", supplierDataStore.getAll());
-//        context.setVariable("selectedSupplier", supplierDataStore.find(supplierId));
-        // // Alternative setting of the template context
-
-//        List<Product> result = productDataStore.getAll();
-//        List<Product> tmp;
-//        if (categoryId == -1) {
-//            tmp = productDataStore.getAll();
-//            if (supplierId != -1) {
-//                List<Product> tmp2 = productDataStore.getBy(supplierDataStore.find(supplierId));
-//                tmp.retainAll(tmp2);
-//        } else if (categoryId != -1) {
-//            tmp = productDataStore.getBy(productCategoryDataStore.find(categoryId));
-//                if (supplierId != -1) {
-//                List<Product> tmp2 = productDataStore.getBy(supplierDataStore.find(supplierId));
-//                tmp.retainAll(tmp2);
-//            }
-//        }
-//
-//        result = tmp;
         context.setVariable("products", finalList);
-//            System.out.println(result.size());
 
-
-        // Map<String, Object> params = new HashMap<>();
-        // params.put("category", productCategoryDataStore.find(1));
-        // params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-        // context.setVariables(params);
         engine.process("product/index.html", context, resp.getWriter());
     }
 
@@ -128,21 +104,4 @@ public class ProductController extends HttpServlet {
             return productDataStore.getBy(supplier);
         }
     }
-
-//    private void switchFunction() {
-//     //case 1:  req.getParameter("category") == null req.getParameter("supplier") == null
-//     // categoryId == dummyValue; supplierId == dummyValue
-//     "products" = productDataStore.getBy(productCategoryDataStore.find(1)))
-//
-//     //case 2: Both req. parameters have values not null
-//     // e.g. categoryId == 3, supplierId == 2
-//     "products" = productDataStore.getIntersection(productCategoryDataStore.find(categoryId)), supplierDataStore.find(supplierId)))
-//
-//     //case 3: Only "category" is not null --- this is equivalent to case 1 but for different values of categoryId
-//     // e.g. categoryId == 2, supplierId == dummyValue
-//     "products" = productDataStore.getBy(productCategoryDataStore.find(categoryId)))
-//     //case 4: Only supplier is not null
-//     // e.g. categoryId == dummyValue; e.g. supplierId == 10
-//     "products" = productDataStore.getBy(supplierDataStore.find(supplierId))
-//    }
 }
