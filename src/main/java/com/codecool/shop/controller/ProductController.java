@@ -21,10 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 import java.security.InvalidKeyException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {""})        // localhost/?sort-category=2
@@ -33,7 +31,7 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        boolean useDaoMem = true;
+        boolean useDaoMem = false;
         ProductDao productDataStore;
         ProductCategoryDao productCategoryDataStore;
         SupplierDao supplierDataStore;
@@ -88,6 +86,8 @@ public class ProductController extends HttpServlet {
 
         /*  This is where we perform a filter action on the intersection
         * between supplier x category   */
+        //TODO .retainAll is a DaoMem implementation. Try to make this more general
+        //Overriding Product.equals( Product ) will make this work with DaoJdbc, too
         productsByCategory.retainAll(productsBySupplier);
 
         List<Product> finalList = productsByCategory;
@@ -124,17 +124,17 @@ public class ProductController extends HttpServlet {
             ProductDao productDataStore,
             ProductCategoryDao productCategoryDataStore
     ) {
-        try {
+//        try {
             if (categoryId == -1) {
                 return productDataStore.getAll();
             } else {
                 ProductCategory selectedCategory = productCategoryDataStore.find(categoryId);
                 return productDataStore.getBy(selectedCategory);
             }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return new ArrayList<>();
-        }
+//        } catch (SQLException e) {
+//            System.err.println(e.getMessage());
+//            return new ArrayList<>();
+//        }
     }
 
     private List<Product> displayFilteredBySupplier(
@@ -142,16 +142,16 @@ public class ProductController extends HttpServlet {
             ProductDao productDataStore,
             SupplierDao supplierDataStore
     ) {
-        try {
+//        try {
             if (idSupplier == -1) {
                 return productDataStore.getAll();
             } else {
                 Supplier selectedSupplier = supplierDataStore.find(idSupplier);
                 return productDataStore.getBy(selectedSupplier);
             }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return new ArrayList<>();
-        }
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//            return new ArrayList<>();
+//        }
     }
 }
