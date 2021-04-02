@@ -58,7 +58,7 @@ public class UserDaoJdbc implements UserDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.setInt(1, id);
             precompiledQuery.executeQuery();
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not find User id = " + id);
             } else {
@@ -90,7 +90,7 @@ public class UserDaoJdbc implements UserDao {
             precompiledQuery.setInt(1, id);
             precompiledQuery.executeQuery();
 
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not find User id = " + id + " to remove!");
             } else {
@@ -121,7 +121,7 @@ public class UserDaoJdbc implements UserDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.executeQuery();
 
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
 
             while (resultSet.next()) {
 
@@ -155,7 +155,7 @@ public class UserDaoJdbc implements UserDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.setString(1, username);
             precompiledQuery.executeQuery();
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not find User with name: " + username);
             } else {
@@ -184,7 +184,7 @@ public class UserDaoJdbc implements UserDao {
             precompiledQuery.setString(1, newPassword);
             precompiledQuery.setString(2, username);
             precompiledQuery.executeQuery();
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not find User with name: " + username);
             }
@@ -209,7 +209,7 @@ public class UserDaoJdbc implements UserDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.executeQuery();
 
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
 
             while (resultSet.next()) {
                 currentName = resultSet.getString(1);
@@ -234,7 +234,7 @@ public class UserDaoJdbc implements UserDao {
             precompiledQuery.setString(1, user.getName());
             precompiledQuery.setString(2, user.getEmail());
             precompiledQuery.executeQuery();
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not find User with id: " + user.getId());
             }

@@ -1,7 +1,6 @@
 package com.codecool.shop.dao.implementation.sql;
 
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
 import javax.sql.DataSource;
@@ -51,7 +50,7 @@ public class SupplierDaoJdbc implements SupplierDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.setInt(1, id);
             precompiledQuery.executeQuery();
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not find supplier id = " + id);
             }
@@ -81,7 +80,7 @@ public class SupplierDaoJdbc implements SupplierDao {
             precompiledQuery.setInt(1, id);
             precompiledQuery.executeQuery();
 
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not remove Supplier id = " + id );
             }
@@ -106,7 +105,7 @@ public class SupplierDaoJdbc implements SupplierDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.executeQuery();
 
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
 
             while (resultSet.next()) {
                 currentId = resultSet.getInt(1);

@@ -20,7 +20,7 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public void add(Product product) {
-        try(Connection connectionObject = dataSource.getConnection()) {
+        try (Connection connectionObject = dataSource.getConnection()) {
             String sqlQuery = "INSERT INTO product (" +
                     "name, description, default_price, default_currency, category_id, supplier_id" +
                     ") VALUES (?, ?, ?, ?, ?, ?)";
@@ -67,7 +67,7 @@ public class ProductDaoJdbc implements ProductDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.setInt(1, id);
             precompiledQuery.executeQuery();
-            ResultSet  resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet  resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 return null;
             }
@@ -123,7 +123,7 @@ public class ProductDaoJdbc implements ProductDao {
             precompiledQuery.setInt(1, id);
             precompiledQuery.executeQuery();
 
-            ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet resultSet = precompiledQuery.getResultSet();
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not remove Product id = " + id );
             }
@@ -150,7 +150,7 @@ public class ProductDaoJdbc implements ProductDao {
                     "supplier_id, category_id FROM product";
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.executeQuery();
-            ResultSet  resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet  resultSet = precompiledQuery.getResultSet();
             while (resultSet.next()) {
                 productId = resultSet.getInt(1);
                 productName = resultSet.getString(2);
@@ -215,7 +215,7 @@ public class ProductDaoJdbc implements ProductDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.setInt(1, supplierId);
             precompiledQuery.executeQuery();
-            ResultSet  resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet  resultSet = precompiledQuery.getResultSet();
             while (resultSet.next()) {
                 productId = resultSet.getInt(1);
                 productName = resultSet.getString(2);
@@ -270,7 +270,7 @@ public class ProductDaoJdbc implements ProductDao {
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.setInt(1, categoryId);
             precompiledQuery.executeQuery();
-            ResultSet  resultSet = precompiledQuery.getGeneratedKeys();
+            ResultSet  resultSet = precompiledQuery.getResultSet();
             while (resultSet.next()) {
                 productId = resultSet.getInt(1);
                 productName = resultSet.getString(2);
