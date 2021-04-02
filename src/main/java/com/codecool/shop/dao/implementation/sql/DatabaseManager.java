@@ -48,18 +48,14 @@ public class DatabaseManager {
     public UserDaoJdbc getUserDao() {return userDao;}
     
     public static DatabaseManager getInstance() throws SQLException, InvalidKeyException {
-//        DatabaseManager doubleCheck = instance;
-//        if (doubleCheck != null) {
-//            return doubleCheck;
-//        }
-//        synchronized (DatabaseManager.class) {
+
             if (instance == null) {
                 DatabaseManager newManager = new DatabaseManager();
                 return newManager;
 
             }
             return instance;
-//        }
+
     }
 
     private DataSource connect() throws SQLException, InvalidKeyException {
