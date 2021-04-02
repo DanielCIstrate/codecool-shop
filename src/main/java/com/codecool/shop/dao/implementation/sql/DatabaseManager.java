@@ -4,6 +4,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 
@@ -15,13 +16,21 @@ public class DatabaseManager {
     private ProductCategoryDaoJdbc productCategoryDao;
     private UserDaoJdbc userDao;
 
+    private DatabaseManager() throws SQLException, InvalidKeyException {
+        this.setup();
+    }
+
+
     public void setup() throws SQLException, InvalidKeyException {
         DataSource dataSource = connect();
+        Connection commonConnection = dataSource.getConnection();
+        commonConnection.setAutoCommit(true);
 
         productDao = new ProductDaoJdbc(dataSource);
         supplierDao = new SupplierDaoJdbc(dataSource);
         productCategoryDao = new ProductCategoryDaoJdbc(dataSource);
         userDao = new UserDaoJdbc(dataSource);
+
     }
 
     public ProductDaoJdbc getProductDao() {
@@ -39,13 +48,18 @@ public class DatabaseManager {
     public UserDaoJdbc getUserDao() {return userDao;}
     
     public static DatabaseManager getInstance() throws SQLException, InvalidKeyException {
-        if (instance == null) {
-            DatabaseManager newManager = new DatabaseManager();
-            newManager.setup();
-            return newManager;
-            
-        }
-        return instance;
+//        DatabaseManager doubleCheck = instance;
+//        if (doubleCheck != null) {
+//            return doubleCheck;
+//        }
+//        synchronized (DatabaseManager.class) {
+            if (instance == null) {
+                DatabaseManager newManager = new DatabaseManager();
+                return newManager;
+
+            }
+            return instance;
+//        }
     }
 
     private DataSource connect() throws SQLException, InvalidKeyException {
