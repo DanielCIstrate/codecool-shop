@@ -20,3 +20,9 @@ target/
 hs_err_pid*
 
 test.html
+
+# Local shell files
+*.sh
+
+# Folder for temporary data
+temp/
