@@ -18,7 +18,6 @@ checkout items and make payments. But also can log in and see the abandoned shop
 - how to use the `DAO` design pattern in `Java`,
 - refreshing SQL knowledge
 
-
 ## Tasks
 
 1. Create a new sprint tab on the existing backlog. Last week you had a long list of stories, a few new stories this week.
@@ -111,6 +110,7 @@ least on abstract class, there is at least one interface implemented
 - All code is pushed to GitHub repository by atomic commits. The implemented feature related commits managed on separated feature branches and merged by a pull request to the `master` branch.
 
 ## Hints
+
 
 - It's not required to integrate real payment services - you can use fake payment implementations.
 - Test (and use) the DAO implementations via interfaces so that it will be easy to change the implementation behind the interface. JUnit also provides support for this case, i. e. running the same test set against several implementations of the same interface.

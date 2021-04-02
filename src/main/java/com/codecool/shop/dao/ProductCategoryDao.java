@@ -12,4 +12,5 @@ public interface ProductCategoryDao {
 
     List<ProductCategory> getAll();
 
+
 }

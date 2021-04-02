@@ -18,7 +18,9 @@
         <version.plugin.maven.war>3.3.0</version.plugin.maven.war>
         <version.plugin.jetty>9.4.30.v20200611</version.plugin.jetty>
         <version.javax.servlet.api>4.0.1</version.javax.servlet.api>
-        <version.thymeleaf>3.0.11.RELEASE</version.thymeleaf>
+        <version.thymeleaf>3.0.12.RELEASE</version.thymeleaf>
+        <version.jackson>2.12.1</version.jackson>
+        <version.postgresql>42.2.5</version.postgresql>
     </properties>
 
     <build>
@@ -71,6 +73,31 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
             <version>${version.thymeleaf}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${version.postgresql}</version>
         </dependency>
     </dependencies>
 </project>

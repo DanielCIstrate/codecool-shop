@@ -1,8 +1,23 @@
 package com.codecool.shop.model;
 
 import java.util.Currency;
+import java.util.Objects;
 
 public class Product extends BaseModel {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return this.getId() == product.getId()
+                && this.getSupplier().getId() == product.getSupplier().getId()
+                && this.getProductCategory().getId() == product.getProductCategory().getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDefaultPrice(), getDefaultCurrency(), getProductCategory(), getSupplier());
+    }
 
     private float defaultPrice;
     private Currency defaultCurrency;
