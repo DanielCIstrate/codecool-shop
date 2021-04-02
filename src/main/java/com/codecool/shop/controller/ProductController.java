@@ -8,6 +8,7 @@ import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.dao.implementation.sql.DatabaseManager;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -62,8 +63,6 @@ public class ProductController extends HttpServlet {
 
 
         int categoryId = processIdInput(categoryIdAsString);
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
 
         String supplierIdAsString;
 
@@ -73,13 +72,19 @@ public class ProductController extends HttpServlet {
             supplierIdAsString = "";
         }
         int supplierId = processIdInput(supplierIdAsString);
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
-        ProductCategory selectedCategory = productCategoryDataStore.find(categoryId);
-        Supplier selectedSupplier = supplierDataStore.find(supplierId);
 
-        List<Product> productsByCategory = displayFilteredByCategory(categoryId, productDataStore, selectedCategory);
-        List<Product> productsBySupplier = displayFilteredBySupplier(supplierId, productDataStore, selectedSupplier);
+
+
+
+        List<Product> productsByCategory = displayFilteredByCategory(
+                categoryId,
+                productDataStore,
+                productCategoryDataStore
+        );
+        List<Product> productsBySupplier = displayFilteredBySupplier(
+                supplierId, productDataStore, supplierDataStore
+        );
 
         /*  This is where we perform a filter action on the intersection
         * between supplier x category   */
@@ -103,7 +108,7 @@ public class ProductController extends HttpServlet {
         int categoryId = -1;
         try {
             categoryId = Integer.parseInt(categoryIdAsString);
-        } catch (Exception ignored) {
+        } catch (NumberFormatException ignored) {
 
         }
 
@@ -114,19 +119,39 @@ public class ProductController extends HttpServlet {
         return ProductDaoMem.getInstance();
     }
 
-    private List<Product> displayFilteredByCategory(int idProduct, ProductDao productDataStore, ProductCategory category) {
-        if (idProduct == -1) {
-            return productDataStore.getAll();
-        } else {
-            return productDataStore.getBy(category);
+    private List<Product> displayFilteredByCategory(
+            int categoryId,
+            ProductDao productDataStore,
+            ProductCategoryDao productCategoryDataStore
+    ) {
+        try {
+            if (categoryId == -1) {
+                return productDataStore.getAll();
+            } else {
+                ProductCategory selectedCategory = productCategoryDataStore.find(categoryId);
+                return productDataStore.getBy(selectedCategory);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return new ArrayList<>();
         }
     }
 
-    private List<Product> displayFilteredBySupplier(int idSupplier, ProductDao productDataStore, Supplier supplier) {
-        if (idSupplier == -1) {
-            return productDataStore.getAll();
-        } else {
-            return productDataStore.getBy(supplier);
+    private List<Product> displayFilteredBySupplier(
+            int idSupplier,
+            ProductDao productDataStore,
+            SupplierDao supplierDataStore
+    ) {
+        try {
+            if (idSupplier == -1) {
+                return productDataStore.getAll();
+            } else {
+                Supplier selectedSupplier = supplierDataStore.find(idSupplier);
+                return productDataStore.getBy(selectedSupplier);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return new ArrayList<>();
         }
     }
 }
