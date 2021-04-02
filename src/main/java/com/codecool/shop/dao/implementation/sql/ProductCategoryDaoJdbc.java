@@ -49,12 +49,14 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
         String currentDepartment;
         try (Connection connectionObject = dataSource.getConnection()) {
 
-            String sqlQuery = "SELECT name, description,department FROM category " +
-                    "WHERE (id = ?)";
-            PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
+            String sqlQuery = "SELECT \"name\", description, department FROM category WHERE id = ?";
+            PreparedStatement precompiledQuery = connectionObject.prepareStatement(
+                    sqlQuery);
             precompiledQuery.setInt(1, id);
+            System.out.println(precompiledQuery.toString());
             precompiledQuery.executeQuery();
             ResultSet resultSet = precompiledQuery.getGeneratedKeys();
+            System.out.println(resultSet.toString()+";"+resultSet.isFirst());
             if (!resultSet.next()) {
                 throw new IllegalArgumentException("Could not find product category id = " + id);
             }
@@ -66,6 +68,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
 
         } catch (SQLException error) {
+            System.err.println("SQL Exc: "+error.getMessage());
             throw new RuntimeException("Error while attempting to get Product with id="+id+" from DB!");
         }
 
@@ -104,7 +107,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
         try (
                 Connection connectionObject = dataSource.getConnection()
         ) {
-            String sqlQuery = "SELECT id, name, description, department FROM category";
+            String sqlQuery = "SELECT c.id, c.name, c.description, c.department FROM category AS c";
 
             PreparedStatement precompiledQuery = connectionObject.prepareStatement(sqlQuery);
             precompiledQuery.executeQuery();
