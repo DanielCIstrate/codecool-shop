@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import java.security.InvalidKeyException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {""})        // localhost/?sort-category=2
@@ -28,6 +31,28 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        boolean useDaoMem = true;
+        ProductDao productDataStore;
+        ProductCategoryDao productCategoryDataStore;
+        SupplierDao supplierDataStore;
+        if (useDaoMem) {
+            productDataStore = ProductDaoMem.getInstance();
+            productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            supplierDataStore = SupplierDaoMem.getInstance();
+        } else {
+            DatabaseManager database;
+            try {
+                database = DatabaseManager.getInstance();
+            } catch (SQLException | InvalidKeyException e) {
+                throw new RuntimeException("Could not get DB manager", e);
+            }
+            productDataStore = database.getProductDao();
+            productCategoryDataStore = database.getProductCategoryDao();
+            supplierDataStore = database.getSupplierDao();
+        }
+
+
         String categoryIdAsString;
         try {
             categoryIdAsString = req.getParameter("category");
